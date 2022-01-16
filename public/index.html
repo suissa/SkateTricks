@@ -14,6 +14,9 @@
       padding: 20px;
       width: 600px;
     }
+    form table {
+      width: 100%;
+    }
     input[type=number] {
       /* width: 80px; */
       border: 1px solid #ccc;
@@ -25,7 +28,7 @@
       width: 20%;
     }
     td:first-child {
-      width: 40%;
+      width: 30%;
       text-align: right;
     }
     .text-center {
@@ -51,7 +54,6 @@
 
       const toAttrs = ([attr, val]) => `${attr}="${val}" `
       const createAttrs = (attrs) => Object.entries(attrs).map(toAttrs).join("")
-
       const createForm = (...data) => `<form>${join(data)}</form>` 
       const createH = (index, txt, attrs) => `<h${index} ${createAttrs(attrs)}>${txt}</h${index}>`
       const createTable = (...data) => `<table>${join(data)}</table>` 
@@ -64,9 +66,8 @@
           createForm(
             createH(2,type, {class: "text-center text-3xl"}),
             createTable(
-
               createTR(
-                createTD("Tricks", {class: "text-center text-xl"}),
+                createTD(""),
                 createTD("Nota Suissa", {class: "text-center"}),
                 createTD("Nota Gaby", {class: "text-center"}),
                 createTD("Nota Lucao", {class: "text-center"})
