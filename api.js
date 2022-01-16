@@ -11,7 +11,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/tricks', async (req, res) => {
-  const result = await Model.find({})
+  const result = (await Model.find({}))
   res.json(result)
 })
 

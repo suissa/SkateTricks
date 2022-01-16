@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skate - Tricks</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <style>
+    form {
+      border: 4px solid red;
+      margin: 50px;
+    }
+  </style>
+</head>
+<body>
+  
+  <main>
+    
+  </main>
+  <script>
+    const groupBy = (xs, key) => xs.reduce((rv, x) => ({
+      ...rv, [x[key]]: [...(rv[x[key]] || []), x]
+    }), {});
+
+    const join = (list, separator = " ") => list.join(separator)
+
+    $(document).ready(() => {
+
+      const main = document.getElementsByTagName("main")
+
+      const createForm = (...data) => `<form>${join(data)}</form>` 
+      const createH = (index, txt) => `<h${index}>${txt}</h${index}>`
+      const createTable = (data) => `<table>${data}</table>` 
+      const createTR = (...data) => `<tr>${join(data)}</tr>` 
+      const createTD = (data) => `<td>${data}</td>` 
+      const createInput = (attrs) => 
+        `<input type="${attrs.type}" placeholder="${attrs.placeholder}" />` 
+
+      const getTypes = (data) => Object.entries(data)
+        .map(([type, tricks]) => 
+          createForm(
+            createH(2,type),
+            createTable(
+              join(tricks.map(({name}) => createTR(
+                createTD(name),
+                createTD(createInput({type: "text", placeholder: name}))
+              )))
+            )
+          )
+        )
+
+      const URL = "http://localhost:3000/tricks"
+      $.ajax({
+        url: URL,
+        context: document.body
+      }).done(function(data) {
+        const groupedData = groupBy(data, "type")
+        console.log(data)
+        // console.log(main)
+
+        const getPage = (data) => {
+
+          const page = getTypes(data).toString().replace(/,/gim, " ")
+
+          return page
+        }
+        const r = getPage(groupedData)
+        console.log(r)
+        main[0].innerHTML = r
+
+        
+
+        // groupedData.array.forEach(element => {
+          
+        // });
+      });
+    })
+  </script>
+</body>
+</html>
