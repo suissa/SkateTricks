@@ -103,18 +103,12 @@
   <script src="./lib.js"></script>
   <script>
 
-  const NUMBERS = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+  const NUMBERS = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ',
+    'eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen ']
 
     const USER = "Suissa"
-    const groupBy = (xs, key) => xs.reduce((rv, x) => ({
-      ...rv, [x[key]]: [...(rv[x[key]] || []), x]
-    }), {});
 
-
-
-    $(document).ready(() => {
-
-
+    document.addEventListener("DOMContentLoaded", (event) => { 
       const getTypes = (data) => Object.entries(data)
         .map(([type, tricks], i) => 
           div(
@@ -145,7 +139,8 @@
           )
         )
 
-      const URL = "http://localhost:3000/tricks"
+      const URL_BASE = "http://localhost:3000"
+      const URL = URL_BASE + "/tricks"
       $.ajax({
         url: URL,
         context: document.body
@@ -176,17 +171,29 @@
           el.target.classList.add("tab-selected")
         }))
 
-        const saveData = ({id, val}) => {
-
-          localStorage.setItem(id, val);
-
+        const saveDataLocal = ({id, val}) => {
+          localStorage.setItem(id, val)
           console.log(localStorage.getItem(id))
+          saveDataServer({
+            id, val
+          })
         }
+
+        const saveDataServer = (data) => {
+          $.ajax({
+            url: URL_BASE + "/grades/" + USER,
+            method: "POST",
+            data  
+          }).done(function(result) {
+            console.log("RESULT: ", result)
+          })
+        }
+
         const inputsGrades = document.querySelectorAll("input")
         inputsGrades.forEach(input => input.addEventListener("blur", (el) => {
           const id = input.dataset.id
           const val = input.value
-          saveData({id, val})
+          saveDataLocal({id, val})
         }))
 
       });

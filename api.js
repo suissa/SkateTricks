@@ -1,9 +1,12 @@
 const Model = require("./model.tricks")
 const express = require('express')
+const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
 const port = 3000
 
+
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
 
 app.get('/', (req, res) => {
@@ -13,6 +16,12 @@ app.get('/', (req, res) => {
 app.get('/tricks', async (req, res) => {
   const result = (await Model.find({}))
   res.json(result)
+})
+
+app.post('/grades/:user', async (req, res) => {
+  const user = (req.params.user) ? req.params.user : "UserTest"
+  const data = req.body
+  console.log({user}, {data})
 })
 
 app.listen(port, () => {
