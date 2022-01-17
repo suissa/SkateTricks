@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skate - Tricks</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" integrity="sha512-wnea99uKIC3TJF7v4eKk4Y+lMz2Mklv18+r4na2Gn1abDRPPOeef95xTzdwGD9e6zXJBteMIhZ1+68QC5byJZw==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+  <style>
+
+    * { margin: 0; padding: 0; }
+    #page-wrap { width: 960px; margin: 100px auto; }
+    h1 { font: 36px Georgia, Serif; margin: 20px 0; }
+    .group:after { visibility: hidden; display: block; font-size: 0; content: " "; clear: both; height: 0; }
+    p { margin: 0 0 10px 0; }
+    
+    .tabs { list-style: none; }
+    .tabs li { display: inline; }
+    .tabs li a { color: black; float: left; display: block; padding: 4px 10px; margin-left: -1px; position: relative; left: 1px; background: white; text-decoration: none; }
+    .tabs li a:hover { background: #ccc; }
+    .tabs li a:active { background: #666; }
+    .tabs li a { background: #ccc; }
+    
+    
+    /* Generic styles & example one */
+    
+    .tabbed-area { margin: 0 0 120px 0; }
+    .box-wrap { position: relative; }
+    .tabbed-area div div { background: white; padding: 20px; min-height: 60vh; position: absolute; top: -1px; left: 0; width: 100%; }
+    .tabbed-area div div, .tabs li a { border: 1px solid #ccc; }
+    #box-one:target, 
+    #box-two:target, 
+    #box-three:target, 
+    #box-four:target, 
+    #box-five:target, 
+    #box-six:target, 
+    #box-seven:target { 
+      display: block;
+      z-index: 1; 
+    }
+
+    .box-wrap div {
+      display: none;
+    }
+    .box-wrap div:first-child {
+      display: block;
+    }
+    
+    
+    body div .tab-selected {
+      background-color: red;
+    }
+    form {
+      margin: 0 auto;
+      padding: 20px;
+      /* width: 600px; */
+      font-size: 1.4rem;
+    }
+    form table {
+      width: 100%;
+    }
+    input[type=number] {
+      border: 1px solid #ccc;
+      display: block;
+      width: 4rem;
+      margin: 0 10px;
+      padding: 0;
+      text-align: center;
+    }
+    td {
+      width: 50%;
+      text-align: left;
+    }
+    td:first-child {
+      text-align: right;
+    }
+    td > span {
+      display: block;
+      width: 50%;
+      margin-left: 10px;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .grade-txt {
+      font-size: 2rem;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="page-wrap">
+    <h1 class="text-center font-4xl">Cadastro de Notas por manobra</h1>
+    <div class="tabbed-area">
+
+      <ul class="tabs group" id="tabs-menu">
+      </ul>
+      
+      <div class="box-wrap" id="box-wrap">
+      
+      
+      </div>
+    
+    </div>
+  </div>
+
+  <main>
+
+  </main>
+  <script>
+
+  const NUMBERS = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+
+    const USER = "Suissa"
+    const groupBy = (xs, key) => xs.reduce((rv, x) => ({
+      ...rv, [x[key]]: [...(rv[x[key]] || []), x]
+    }), {});
+
+    const join = (list, separator = " ") => list.join(separator)
+
+    $(document).ready(() => {
+
+
+      const toAttrs = ([attr, val]) => `${attr.trim()}="${val}"`
+      const createAttrs = (attrs) => Object.entries(attrs).map(toAttrs).join("")
+
+      const createDiv = (attrs, ...data) => `<div ${createAttrs(attrs).replace(" ", "")}>${join(data)}</div>` 
+      const createForm = (...data) => `<form>${join(data)}</form>` 
+      const createH = (index, txt, attrs) => `<h${index} ${createAttrs(attrs)}>${txt}</h${index}>`
+      const createTable = (...data) => `<table>${join(data)}</table>` 
+      const createTR = (...data) => `<tr>${join(data)}</tr>` 
+      const createTD = (data, attrs = {}) => `<td ${createAttrs(attrs)}>${data}</td>`
+      const createInput = (attrs) => `<input ${createAttrs(attrs)} />`
+      const createLi = (attrs = {}, data) => `<li ${createAttrs(attrs).replace(" ", "")}>${data}</li>`
+      const createA = (data, href, attrs = {}) => `<a href="${href.replace(" ", "")}">${data}</a>`
+
+      const getTypes = (data) => Object.entries(data)
+        .map(([type, tricks], i) => 
+          createDiv(
+            {id: `box-${NUMBERS[i+1]}`},
+            [
+              createH(2,type, {class: "text-center text-2xl"}),
+              createForm(
+                createTable(
+                  join(tricks.map(({name}) => [
+                    createTR(
+                      createTD(name),
+                      createTD(createInput({type: "number", min: 1, max: 10, step: 0.1, placeholder: 1}))
+                    )
+                  ]))
+                )
+              )
+            ]
+          )
+        )
+
+
+      
+      const getTabs = (data) => Object.entries(data)
+        .map(([type, tricks], i) => 
+          createLi(
+            {id: `li-${NUMBERS[i+1]}`},
+            createA(type, `#box-${NUMBERS[i+1]}`)
+            // createA(type, {href: `#box-${NUMBERS[i+1]}`})
+          )
+        )
+
+      const URL = "http://localhost:3000/tricks"
+      $.ajax({
+        url: URL,
+        context: document.body
+      }).done(function(data) {
+        const groupedData = groupBy(data, "type")
+        console.log(data)
+        // console.log(main)
+
+        const sanitizeHTML = (html) => html.toString().replace(/,/gim, " ")
+        const getPage = (data) => {
+
+          const page = sanitizeHTML(getTypes(data))
+
+          return page
+        }
+
+        const main = document.getElementsByTagName("main")[0]
+        const tabsMenu = document.getElementById("tabs-menu")
+        const tabContent = document.getElementById("box-wrap")
+        
+        tabContent.innerHTML = getPage(groupedData)
+
+        const tabsMenuData = getTabs(groupedData)
+        console.log({tabsMenuData})
+        tabsMenu.innerHTML = sanitizeHTML(tabsMenuData)
+
+        const tabsMenuLi = document.querySelectorAll("#tabs-menu li a")
+        tabsMenuLi.forEach(li => li.addEventListener("click", (el) => {
+          $("#tabs-menu li a").removeClass("tab-selected")
+          el.target.classList.add("tab-selected")
+        }))
+
+      });
+    })
+  </script>
+</body>
+</html>
