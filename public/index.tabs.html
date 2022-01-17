@@ -189,6 +189,11 @@
           })
         }
 
+        const sendToServer = (data) => {
+
+          saveDataServer(data)
+        }
+        
         const inputsGrades = document.querySelectorAll("input")
         inputsGrades.forEach(input => input.addEventListener("blur", (el) => {
           const id = input.dataset.id
