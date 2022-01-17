@@ -109,27 +109,22 @@
     const USER = "Suissa"
 
     document.addEventListener("DOMContentLoaded", (event) => { 
-      const getTypes = (data) => Object.entries(data)
-        .map(([type, tricks], i) => 
-          div(
-            {id: `box-${NUMBERS[i+1]}`},
-            [
-              h(2,type, {class: "text-center text-2xl"}),
-              form(
-                table(
-                  join(tricks.map(({_id, name}) => [
-                    tr(
-                      td(name),
-                      td(input({type: "number", min: 1, max: 10, step: 0.1, placeholder: 1, "data-id": _id}))
-                    )
-                  ]))
+      const getTypes = (data) => Object.entries(data).map(([type, tricks], i) => 
+        div(
+          {id: `box-${NUMBERS[i+1]}`},
+          [ h(2,type, {class: "text-center text-2xl"}),
+            form(
+              table( join(tricks.map(({_id, name} ) => [
+                tr(
+                  td(name),
+                  td(input({type: "number", min: 1, max: 10, step: 0.1, placeholder: 1, "data-id": _id}))
                 )
+                ]))
               )
-            ]
-          )
+            )
+          ]
         )
-
-
+      )
       
       const getTabs = (data) => Object.entries(data)
         .map(([type, tricks], i) => 
@@ -193,7 +188,7 @@
 
           saveDataServer(data)
         }
-        
+
         const inputsGrades = document.querySelectorAll("input")
         inputsGrades.forEach(input => input.addEventListener("blur", (el) => {
           const id = input.dataset.id
