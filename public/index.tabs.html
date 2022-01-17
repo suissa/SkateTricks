@@ -93,21 +93,13 @@
   <div id="page-wrap">
     <h1 class="text-center font-4xl">Cadastro de Notas por manobra</h1>
     <div class="tabbed-area">
-
       <ul class="tabs group" id="tabs-menu">
       </ul>
-      
       <div class="box-wrap" id="box-wrap">
-      
-      
       </div>
-    
     </div>
   </div>
 
-  <main>
-
-  </main>
   <script src="./lib.js"></script>
   <script>
 
@@ -131,10 +123,10 @@
               h(2,type, {class: "text-center text-2xl"}),
               form(
                 table(
-                  join(tricks.map(({name}) => [
+                  join(tricks.map(({_id, name}) => [
                     tr(
                       td(name),
-                      td(input({type: "number", min: 1, max: 10, step: 0.1, placeholder: 1}))
+                      td(input({type: "number", min: 1, max: 10, step: 0.1, placeholder: 1, "data-id": _id}))
                     )
                   ]))
                 )
@@ -182,6 +174,24 @@
         tabsMenuLi.forEach(li => li.addEventListener("click", (el) => {
           $("#tabs-menu li a").removeClass("tab-selected")
           el.target.classList.add("tab-selected")
+        }))
+
+        const saveData = ({id, val}) => {
+
+          localStorage.setItem(id, val);
+
+          console.log(localStorage.getItem(id))
+        }
+        const inputsGrades = document.querySelectorAll("input")
+        inputsGrades.forEach(input => input.addEventListener("blur", (el) => {
+          console.log({input}, {el})
+          const val = input.value
+          console.log({val})
+          const trick = input.parentNode.parentNode.childNodes[0].childNodes[0].data
+          console.log({trick})
+          const id = input.dataset.id
+          console.log({id})
+          saveData({id, val})
         }))
 
       });
