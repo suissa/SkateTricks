@@ -184,13 +184,8 @@
         }
         const inputsGrades = document.querySelectorAll("input")
         inputsGrades.forEach(input => input.addEventListener("blur", (el) => {
-          console.log({input}, {el})
-          const val = input.value
-          console.log({val})
-          const trick = input.parentNode.parentNode.childNodes[0].childNodes[0].data
-          console.log({trick})
           const id = input.dataset.id
-          console.log({id})
+          const val = input.value
           saveData({id, val})
         }))
 
