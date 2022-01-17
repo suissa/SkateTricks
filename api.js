@@ -18,10 +18,10 @@ app.get('/tricks', async (req, res) => {
   res.json(result)
 })
 
-app.post('/grades/:user', async (req, res) => {
-  const user = (req.params.user) ? req.params.user : "UserTest"
+app.post('/grades', async (req, res) => {
+  // const user = (req.params.user) ? req.params.user : "UserTest"
   const data = req.body
-  console.log({user}, {data})
+  console.log(data.user, {data})
   if (data.val !== "") {
     const result = await Model.updateOne({_id: data.id}, { $push: { grades: Number(data.val) } })
     console.log(result)

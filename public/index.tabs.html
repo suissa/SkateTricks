@@ -108,6 +108,8 @@
 
     const USER = "Suissa"
 
+    localStorage.setItem("user", USER)
+
     document.addEventListener("DOMContentLoaded", (event) => { 
       const getTypes = (data) => Object.entries(data).map(([type, tricks], i) => 
         div(
@@ -169,14 +171,16 @@
         const saveDataLocal = ({id, val}) => {
           localStorage.setItem(id, val)
           console.log(localStorage.getItem(id))
+
+          const user = localStorage.getItem("user")
           saveDataServer({
-            id, val
+            user, id, val
           })
         }
 
         const saveDataServer = (data) => {
           $.ajax({
-            url: URL_BASE + "/grades/" + USER,
+            url: URL_BASE + "/grades",
             method: "POST",
             data  
           }).done(function(result) {
